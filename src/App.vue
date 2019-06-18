@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <app-header></app-header>
+    <transition
+      name="router-anim"
+      enter-active-class="animated fadeInUp"
+      leave-active-class="animated fadeInOut"
+    >
+      <router-view/>
+    </transition>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import header from "./components/Header.vue";
 export default {
-  name: 'app',
   components: {
-    HelloWorld
+    "app-header": header
+  },
+  data() {
+    return {};
   }
-}
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "scss/vars";
+
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css";
+body {
+  font-family: $mainFont;
+}
+p,
+h1,
+h2 {
+  color: $darkGrey;
 }
 </style>
