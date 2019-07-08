@@ -6,16 +6,20 @@
       enter-active-class="animated fadeInUp"
       leave-active-class="animated fadeInOut"
     >
-      <router-view/>
+      <router-view />
     </transition>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import header from "./components/Header.vue";
+import footer from "./components/Footer.vue";
+
 export default {
   components: {
-    "app-header": header
+    "app-header": header,
+    "app-footer": footer
   },
   data() {
     return {};

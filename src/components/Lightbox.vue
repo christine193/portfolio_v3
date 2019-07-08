@@ -1,20 +1,49 @@
 <template>
-  <div class="portfolioPage">
-    <a href="#" @click.prevent="show" class="full">
-      <div id="thumbnails">
-        <img :src="thumbnail" class="thumb">
+  <div class="centered">
+    <div class="animBubble centered">
+      <div id="thumbBox">
+        <img
+          @click="lightboxEffect(index)"
+          @mouseover="hoverIn()"
+          @mouseout="hoverOut()"
+          v-for="(thumbnail, index) in thumbnails"
+          :key="thumbnail"
+          :src="thumbnailsPath + thumbnail"
+          class="thumb"
+        />
+        <transition name="fade" mode="out-in">
+          <div @click.stop="bg = !bg" class="lightBoxBg" v-if="bg"></div>
+        </transition>
       </div>
-    </a>
 
-    <div v-if="visible" @click="hide">
-      <div class="lightboxContainer">
-        <div class="exitBtn" @click.stop="hide">Exit</div>
-
-        <div @click.stop="prev" class="arrow" :class="{'invisible': ! hasPrev()}">Prev</div>
-        <div class="centered lightboxImg" @click.stop>
-          <img :src="images[index]">
+      <div v-if="bg">
+        <div class="btn close" @click.stop="bg = !bg">
+          <i class="fas fa-times"></i>
         </div>
-        <div @click.stop="next" class="arrow" :class="{'invisible': ! hasNext()}">Next</div>
+
+        <div class="navigate">
+          <div @click="prev" class="btn prev">
+            <i class="fas fa-angle-left"></i>
+          </div>
+          <div @click="next" class="btn next">
+            <i class="fas fa-angle-right"></i>
+          </div>
+        </div>
+
+        <div v-if="bg" class="lightboxContainer">
+          <transition
+            name="fade"
+            enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut"
+          >
+            <img
+              class="page"
+              id="currentImg"
+              :key="currentImage"
+              :src="largePath + [currentImage + 1] +'.jpg'"
+            />
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -22,49 +51,60 @@
 
 <script>
 export default {
-  props: {
-    thumbnail: {
-      type: String
-      // required: true
-    },
-    images: {
-      type: Array,
-
-      default: () => []
-    }
-  },
+  mix: "#eee",
   data() {
     return {
-      visible: false,
-      index: 0
+      mix: "#eee",
+      bg: false,
+      currentImage: 0,
+      count: true
     };
   },
+  props: {
+    thumbnails: {
+      type: Array,
+      required: true
+    },
+    largeImages: {
+      type: Array,
+      required: true
+    },
+    thumbnailsPath: {
+      type: String,
+      required: true
+    },
+    largePath: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
-    show() {
-      this.visible = true;
+    hoverIn() {
+      this.mix = "black";
     },
-    hide() {
-      this.visible = false;
-      this.index = 0;
+    hoverOut() {
+      this.mix = "#eee";
     },
-    hasNext() {
-      return this.index + 1 < this.images.length;
-    },
-    hasPrev() {
-      return this.index - 1 >= 0;
-    },
-    prev() {
-      if (this.hasPrev()) {
-        this.index -= 1;
-      }
+    lightboxEffect(curr) {
+      this.currentImage = curr;
+      this.bg = !this.bg;
     },
     next() {
-      if (this.hasNext()) {
-        this.index += 1;
+      if (this.currentImage < this.largeImages.length - 1) {
+        this.currentImage++;
+      } else {
+        this.currentImage = 0;
+      }
+    },
+    prev() {
+      if (this.currentImage > 0) {
+        this.currentImage--;
+      } else {
+        this.currentImage = this.largeImages.length - 1;
       }
     },
     onKeydown(e) {
-      if (this.visible) {
+      if (this.largeImages) {
         switch (e.key) {
           case "ArrowRight":
             this.next();
@@ -94,49 +134,112 @@ export default {
 </script>
 
 <style lang="scss">
-.thumb {
-  height: 200px;
+@import "../scss/vars";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+.animBubble {
+  transition: all 1s;
+  height: 100%;
+  width: 100%;
 }
-.thumbnails {
+#thumbBox {
   display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
+  flex-wrap: wrap !important;
+  justify-content: space-around;
+  transition: all 2s;
+}
+
+.thumb {
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.thumb:hover {
+  transition: all 0.3s;
+  mix-blend-mode: multiply;
 }
 
 .lightboxContainer {
-  z-index: 5;
+  z-index: 0;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.163);
+  width: 100%;
   display: flex;
-  //background: red;
   align-items: center;
   justify-content: center;
+  //background: #eeeeee;
+  img {
+    max-height: 90vh;
+  }
 }
-.lightboxContainer img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: calc(100vh - 90px);
+.page {
+  position: fixed;
+  z-index: 100;
+  -webkit-box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.99);
+  -moz-box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.99);
+  box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.9);
 }
 
-.arrow {
-  background: Red;
-  width: 35px;
-  height: 20px;
+.lightBoxBg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.88);
+//  / z-index: 10;
+}
+.btn {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  font-size: 3em;
+  color: $darkGrey;
+  opacity: 0.5;
+  transition: all 500ms;
+}
+.btn:hover {
+  opacity: 1;
+  color: $primary;
 }
 
-.exitBtn {
+.close {
   position: absolute;
   top: 0;
   left: 0;
+  font-size: 2em;
 }
 
+.navigate {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+}
+
+.next {
+  position: absolute;
+  right: 0;
+}
 .invisible {
   visibility: hidden;
 }
-</style>
+@media only screen and (min-width: 650px) {
+  .thumb {
+    height: 200px;
+    width: 200px;
+  }
+}
 
+@media only screen and (min-width: 750px) {
+  .lightboxContainer {
+    padding: 30px;
+  }
+}
+</style>
