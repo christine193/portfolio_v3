@@ -1,9 +1,6 @@
 <template>
   <footer>
-    <p>
-      Made with
-      <i class="fas fa-heart"></i> in London,Ontario
-    </p>
+    <p>Christine Lopez 2019</p>
   </footer>
 </template>
 
@@ -14,13 +11,13 @@ export default {};
 
 <style lang="scss">
 footer {
-  position: absolute;
+  position: fixed;
   width: 100%;
   text-align: center;
   bottom: 0;
   left: 0;
-
-  z-index: 2;
+  background: #eee;
+  // z-index: 2;
 }
 .fa-heart {
   color: rgb(255, 98, 125);

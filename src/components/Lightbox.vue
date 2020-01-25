@@ -1,49 +1,56 @@
 <template>
-  <div class="centered">
-    <div class="animBubble centered">
-      <div id="thumbBox">
-        <img
-          @click="lightboxEffect(index)"
-          @mouseover="hoverIn()"
-          @mouseout="hoverOut()"
-          v-for="(thumbnail, index) in thumbnails"
-          :key="thumbnail"
-          :src="thumbnailsPath + thumbnail"
-          class="thumb"
-        />
-        <transition name="fade" mode="out-in">
-          <div @click.stop="bg = !bg" class="lightBoxBg" v-if="bg"></div>
-        </transition>
+  <div class="lightBox">
+    <div class="portTitle centered">
+      <h2>Gallery</h2>
+      <p>A Collection of illustrations done on Adobe Photoshop, Illustrator and Cinema 4D.</p>
+    </div>
+    <div id="thumbBox">
+      <img
+        @click="lightboxEffect(index)"
+        @mouseover="hoverIn()"
+        @mouseout="hoverOut()"
+        v-for="(thumbnail, index) in thumbnails"
+        :key="thumbnail"
+        :src="thumbnailsPath + thumbnail"
+        class="thumb"
+      />
+      <transition
+        name="fade"
+        mode="out-in"
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <div @click.stop="bg = !bg" class="lightBoxBg" v-if="bg"></div>
+      </transition>
+    </div>
+
+    <div v-if="bg">
+      <div class="btn close" @click.stop="bg = !bg">
+        <i class="fas fa-times"></i>
       </div>
 
-      <div v-if="bg">
-        <div class="btn close" @click.stop="bg = !bg">
-          <i class="fas fa-times"></i>
+      <div class="navigate">
+        <div @click="prev" class="btn prev">
+          <i class="fas fa-angle-left"></i>
         </div>
+        <div @click="next" class="btn next">
+          <i class="fas fa-angle-right"></i>
+        </div>
+      </div>
 
-        <div class="navigate">
-          <div @click="prev" class="btn prev">
-            <i class="fas fa-angle-left"></i>
-          </div>
-          <div @click="next" class="btn next">
-            <i class="fas fa-angle-right"></i>
-          </div>
-        </div>
-
-        <div v-if="bg" class="lightboxContainer">
-          <transition
-            name="fade"
-            enter-active-class="animated fadeIn"
-            leave-active-class="animated fadeOut"
-          >
-            <img
-              class="page"
-              id="currentImg"
-              :key="currentImage"
-              :src="largePath + [currentImage + 1] +'.jpg'"
-            />
-          </transition>
-        </div>
+      <div v-if="bg" class="lightboxContainer">
+        <transition
+          name="fade"
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+        >
+          <img
+            class="page"
+            id="currentImg"
+            :key="currentImage"
+            :src="largePath + [currentImage + 1] +'.jpg'"
+          />
+        </transition>
       </div>
     </div>
   </div>
@@ -56,6 +63,7 @@ export default {
     return {
       mix: "#eee",
       bg: false,
+
       currentImage: 0,
       count: true
     };
@@ -133,56 +141,50 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../scss/vars";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 
-.animBubble {
-  transition: all 1s;
-  height: 100%;
-  width: 100%;
-}
 #thumbBox {
   display: flex;
   flex-wrap: wrap !important;
-  justify-content: space-around;
-  transition: all 2s;
+  justify-content: center;
+  margin: 5px;
+  margin-bottom: 50px;
 }
 
 .thumb {
   height: 150px;
   width: 150px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .thumb:hover {
   transition: all 0.3s;
-  mix-blend-mode: multiply;
+  opacity: 0.5;
 }
 
 .lightboxContainer {
-  z-index: 0;
+  z-index: 1000;
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  //background: #eeeeee;
+
   img {
     max-height: 90vh;
   }
 }
+
 .page {
   position: fixed;
-  z-index: 100;
-  -webkit-box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.99);
-  -moz-box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.99);
-  box-shadow: 10px 10px 34px -17px rgba(0, 0, 0, 0.9);
 }
 
 .lightBoxBg {
@@ -192,35 +194,39 @@ export default {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.88);
-//  / z-index: 10;
+  z-index: 100;
 }
 .btn {
   position: relative;
-  z-index: 10;
+  margin: 5%;
+  z-index: 1000;
   cursor: pointer;
   font-size: 3em;
   color: $darkGrey;
-  opacity: 0.5;
+  opacity: 0.7;
   transition: all 500ms;
 }
 .btn:hover {
   opacity: 1;
-  color: $primary;
+  color: $pink;
 }
 
 .close {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   font-size: 2em;
+  z-index: 5000;
 }
 
 .navigate {
   left: 0;
-  top: 50%;
+  height: 100vh;
+  top: 40vh;
   width: 100%;
-  position: absolute;
+  position: fixed;
   display: flex;
+  z-index: 5000;
 }
 
 .next {
