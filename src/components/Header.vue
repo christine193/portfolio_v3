@@ -2,7 +2,7 @@
   <nav>
     <ul>
       <li>
-        <router-link to="/About" class="link" exact>About</router-link>
+        <router-link to="/About" class="link">About</router-link>
       </li>
 
       <li>
@@ -23,8 +23,8 @@ export default {};
 
 nav {
   position: fixed;
-  width: 100%;
-  // padding-top: 5px;
+  width: 100vw;
+
   top: 0;
   left: 0;
   text-align: center;
@@ -51,8 +51,7 @@ a {
   letter-spacing: 0.1em;
 }
 
-.router-link-exact-active,
-.router-link-active {
+.router-link-exact-active {
   border-bottom: 1.5px solid $pink;
   display: block;
 
