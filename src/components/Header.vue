@@ -20,6 +20,11 @@ export default {};
 
 <style lang="scss" scoped>
 @import "../scss/vars";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 nav {
   position: fixed;
@@ -52,7 +57,7 @@ a {
 }
 
 .router-link-exact-active {
-  border-bottom: 1.5px solid $pink;
+  border-bottom: 2px solid $pink;
   display: block;
 
   position: relative;

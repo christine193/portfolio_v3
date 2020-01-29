@@ -1,10 +1,10 @@
 <template>
   <div class="holder">
     <div class="centered">
-      <form action="https://formspree.io/email@domain.tld" method="POST">
+      <form action="https://formspree.io/mqkqkazb" method="POST">
         <h2>Message Me!</h2>
         <p>Let's work together!</p>
-        <input type="text" name="name" placeholder="name" />
+        <input type="text" name="_replyto" placeholder="name" />
 
         <input type="email" name="email" placeholder="email" />
         <textarea name="message" rows="3" placeholder="message"></textarea>
@@ -14,6 +14,7 @@
           class="subButton"
           type="submit"
           name="submit"
+          value="send"
           v-on:click.prevent="handleClick"
           v-bind:style="{backgroundColor:bgColor}"
         >{{ message }}</button>

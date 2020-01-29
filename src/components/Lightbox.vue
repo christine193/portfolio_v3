@@ -1,10 +1,10 @@
 <template>
   <div class="lightBox">
     <div class="portTitle centered">
-      <h2>Gallery</h2>
-      <p>A Collection of illustrations done on Adobe Photoshop, Illustrator and Cinema 4D.</p>
+      <h2>Gallery Coming Soon</h2>
+      <!--  <p>A Collection of illustrations done on Adobe Photoshop, Illustrator and Cinema 4D.</p>-->
     </div>
-    <div id="thumbBox">
+    <!-- <div id="thumbBox">
       <img
         @click="lightboxEffect(index)"
         @mouseover="hoverIn()"
@@ -52,7 +52,7 @@
           />
         </transition>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
